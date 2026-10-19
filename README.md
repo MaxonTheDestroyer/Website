@@ -19,6 +19,6 @@ bundle install                                  # first time only
 bundle exec jekyll serve --livereload
 ```
 
-Then open http://localhost:4000/Website/.
+Then open http://localhost:4000.
 
-Live site: https://maxonthedestroyer.github.io/Website/ (GitHub Pages builds from `main` on every push).
+Live site: https://maxonzorro.com (GitHub Pages builds from `main` on every push).
