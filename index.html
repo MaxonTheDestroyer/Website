@@ -6,7 +6,7 @@ layout: default
   {%- assign i = forloop.index0 %}
   <div data-anchor="{{ i }}section" class="section{% if s.light %} light{% endif %}" id="section{{ i }}">
     {%- if s.logo %}
-    <h1><img class="logo" src="{{ s.logo | relative_url }}" alt="{{ s.heading }}"{% if s.logo_blend %} style="mix-blend-mode: {{ s.logo_blend }}"{% endif %}></h1>
+    <h1><img class="logo" src="{{ s.logo | relative_url }}" alt="{{ s.heading }}"></h1>
     {%- else %}
     <h1 class="heavy">{{ s.heading }}</h1>
     {%- endif %}

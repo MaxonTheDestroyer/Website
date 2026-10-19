@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="{{ '/assets/css/1180px.css' | relative_url }}">
     <style>
       .section { background-color: #000; background-position: center; background-repeat: no-repeat; }
-      /* "screen" blending drops the logo's black backdrop so only the lettering shows over the background */
-      .section .logo { display: block; margin: 0 auto 1.5em; max-height: 20vh; max-width: 80vw; mix-blend-mode: screen; }
+      .section .logo { display: block; margin: 0 auto 1.5em; max-height: 20vh; max-width: 80vw; }
       .section.light { background-color: #fff; }
       .section.light h1, .section.light h2, .section.light h3 { text-shadow: none; }
       .section.light h1 { color: #222; }
@@ -25,21 +24,31 @@
       }
       .split { display: flex; align-items: center; justify-content: center; gap: 5vw; margin: 2em auto 0; padding: 0 5vw; max-width: 1200px; }
       .split img { max-height: 60vh; max-width: 40vw; width: auto; height: auto; }
-      .split-text { flex: 1; text-align: left; font-size: 1.4em; line-height: 1.5; }
+      /* scales with the viewport so the text fills the column beside the image (60vh tall) */
+      .split-text { flex: 1; text-align: left; font-size: clamp(1rem, min(1.7vw, 2.6vh), 1.9rem); line-height: 1.45; }
+      .split-text p { margin: 0 0 0.8em; }
+      .split-text a { color: inherit; }
+      .split-text .email { font-size: 1.15em; font-weight: bold; }
       @media only screen and (orientation: portrait) {
         .split { flex-direction: column; gap: 3vh; }
-        .split img { max-height: 40vh; max-width: 80vw; }
+        .split img { max-height: 30vh; max-width: 80vw; }
+        .split-text { font-size: clamp(0.85rem, 3.6vw, 1.2rem); }
       }
       .back-to-top { margin-top: 2em; }
       .back-to-top a { color: #fff; }
-      .section .section-image { display: block; margin: 0 auto; max-height: 50vh; max-width: 80vw; mix-blend-mode: screen; }
+      .section .section-image { display: block; margin: 0 auto; max-height: 50vh; max-width: 80vw; }
       {%- for s in site.sections %}
       #section{{ forloop.index0 }} { padding: 6% 0 0 0;{% if s.background_color %} background-color: {{ s.background_color }};{% endif %} }
       {%- if s.highlight_color %}
       #section{{ forloop.index0 }} .highlight-container:before { background: {{ s.highlight_color }}; opacity: 0.85; }
       #section{{ forloop.index0 }} .highlight-container:after { background: {{ s.highlight_color }}; opacity: 0.4; }
       {%- endif %}
-      {%- if s.background %}
+      {%- if s.heading_color %}
+      #section{{ forloop.index0 }} h1 { color: {{ s.heading_color }}; }
+      {%- endif %}
+      {%- if s.background_tile %}
+      #section{{ forloop.index0 }} { background-image: url("{{ s.background_tile | relative_url }}"); background-repeat: repeat; background-size: auto; background-position: top left; }
+      {%- elsif s.background %}
       #section{{ forloop.index0 }} { background-image: url("{{ s.background | relative_url }}"); }
       @media only screen and (orientation: portrait) {
         {%- if s.background_portrait %}

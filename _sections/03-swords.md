@@ -1,7 +1,9 @@
 ---
 order: 3
 heading: Swords of Doom
-background_color: "#4a2c1d"   # brown
+heading_color: "#cd7f32"      # bronze
+background_color: "#2a1912"   # shows while the tile loads
+background_tile: /assets/img/swords/backdrop.jpg   # dimmed, mirrored strip of the cloth from the sword photo
 images:
   - /assets/img/swords/IMG_0416.jpg
 ---

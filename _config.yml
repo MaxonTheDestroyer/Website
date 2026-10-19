@@ -9,4 +9,4 @@ collections:
     sort_by: order
 
 markdown: kramdown
-exclude: [README.md, Gemfile, Gemfile.lock, vendor, pics]   # pics/ holds full-size originals; web copies live in assets/img/
+exclude: [README.md, Gemfile, Gemfile.lock, vendor, pics, text_page4.md]   # pics/ holds full-size originals; web copies live in assets/img/
