@@ -1,0 +1,45 @@
+---
+layout: default
+---
+<div id="fullpage">
+  {%- for s in site.sections %}
+  {%- assign i = forloop.index0 %}
+  <div data-anchor="{{ i }}section" class="section{% if s.light %} light{% endif %}" id="section{{ i }}">
+    {%- if s.logo %}
+    <h1><img class="logo" src="{{ s.logo | relative_url }}" alt="{{ s.heading }}"{% if s.logo_blend %} style="mix-blend-mode: {{ s.logo_blend }}"{% endif %}></h1>
+    {%- else %}
+    <h1 class="heavy">{{ s.heading }}</h1>
+    {%- endif %}
+    {%- if s.subheading %}
+    <br><h2 class="large-blur">
+      <span class="highlight-container"><span class="highlight">{{ s.subheading }}</span></span>
+    </h2>
+    {%- endif %}
+    {%- if s.image %}
+    <img class="section-image" src="{{ s.image | relative_url }}" alt="">
+    {%- endif %}
+    {%- if s.images %}
+    <div class="gallery">
+      {%- for img in s.images %}
+      <img src="{{ img | relative_url }}" alt="{{ s.heading }}" loading="lazy">
+      {%- endfor %}
+    </div>
+    {%- endif %}
+    {%- assign body = s.content | strip %}
+    {%- if s.side_image %}
+    <div class="split"{% if s.text_color %} style="color: {{ s.text_color }}"{% endif %}>
+      <img src="{{ s.side_image | relative_url }}" alt="" loading="lazy">
+      <div class="split-text">{{ s.content | markdownify }}</div>
+    </div>
+    {%- elsif body != "" %}
+    <br><h3 class="large-blur">
+      <span class="highlight-container"><span class="highlight">{{ s.content | markdownify | remove: '<p>' | remove: '</p>' | strip }}</span></span>
+    </h3>
+    {%- endif %}
+
+    {%- if forloop.last %}
+    <p class="back-to-top"><a data-menuanchor="0section" href="#0section">back to top</a></p>
+    {%- endif %}
+  </div>
+  {%- endfor %}
+</div>

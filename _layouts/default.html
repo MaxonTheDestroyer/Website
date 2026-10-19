@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff5a71">
+    <title>{{ site.title }}</title>
+    <meta name="description" content="{{ site.description }}">
+    <link rel="stylesheet" href="{{ '/assets/css/jquery.fullPage.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/examples.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/mediaquery.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/1180px.css' | relative_url }}">
+    <style>
+      .section { background-color: #000; background-position: center; background-repeat: no-repeat; }
+      /* "screen" blending drops the logo's black backdrop so only the lettering shows over the background */
+      .section .logo { display: block; margin: 0 auto 1.5em; max-height: 20vh; max-width: 80vw; mix-blend-mode: screen; }
+      .section.light { background-color: #fff; }
+      .section.light h1, .section.light h2, .section.light h3 { text-shadow: none; }
+      .section.light h1 { color: #222; }
+      .gallery { display: flex; justify-content: center; align-items: center; gap: 3vw; margin-top: 2em; padding: 0 3vw; }
+      .gallery img { width: auto; height: auto; max-width: 28vw; max-height: 55vh; }
+      @media only screen and (orientation: portrait) {
+        .gallery { flex-direction: column; gap: 2vh; }
+        .gallery img { width: auto; max-width: 80vw; max-height: 24vh; }
+      }
+      .split { display: flex; align-items: center; justify-content: center; gap: 5vw; margin: 2em auto 0; padding: 0 5vw; max-width: 1200px; }
+      .split img { max-height: 60vh; max-width: 40vw; width: auto; height: auto; }
+      .split-text { flex: 1; text-align: left; font-size: 1.4em; line-height: 1.5; }
+      @media only screen and (orientation: portrait) {
+        .split { flex-direction: column; gap: 3vh; }
+        .split img { max-height: 40vh; max-width: 80vw; }
+      }
+      .back-to-top { margin-top: 2em; }
+      .back-to-top a { color: #fff; }
+      .section .section-image { display: block; margin: 0 auto; max-height: 50vh; max-width: 80vw; mix-blend-mode: screen; }
+      {%- for s in site.sections %}
+      #section{{ forloop.index0 }} { padding: 6% 0 0 0;{% if s.background_color %} background-color: {{ s.background_color }};{% endif %} }
+      {%- if s.highlight_color %}
+      #section{{ forloop.index0 }} .highlight-container:before { background: {{ s.highlight_color }}; opacity: 0.85; }
+      #section{{ forloop.index0 }} .highlight-container:after { background: {{ s.highlight_color }}; opacity: 0.4; }
+      {%- endif %}
+      {%- if s.background %}
+      #section{{ forloop.index0 }} { background-image: url("{{ s.background | relative_url }}"); }
+      @media only screen and (orientation: portrait) {
+        {%- if s.background_portrait %}
+        #section{{ forloop.index0 }} { background-image: url("{{ s.background_portrait | relative_url }}"); }
+        {%- else %}
+        /* no portrait crop provided: show the whole image instead of cropping it */
+        #section{{ forloop.index0 }} { background-size: contain; background-attachment: scroll; }
+        {%- endif %}
+      }
+      {%- endif %}
+      {%- endfor %}
+    </style>
+  </head>
+  <body>
+    {{ content }}
+
+    <script src="{{ '/assets/js/jquery.min.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/scrolloverflow.min.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/jquery.fullPage.min.js' | relative_url }}"></script>
+    <script>
+      $(function () {
+        $('#fullpage').fullpage({ verticalCentered: false, css3: false });
+      });
+    </script>
+  </body>
+</html>
