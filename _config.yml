@@ -1,7 +1,7 @@
 title: Maxon Zorro
 description: Short tagline   # TBD
-url: ""                      # e.g. https://<user>.github.io
-baseurl: ""                  # e.g. /repo-name for a project site; empty for <user>.github.io
+url: "https://maxonthedestroyer.github.io"
+baseurl: "/Website"          # project site: https://maxonthedestroyer.github.io/Website/
 
 collections:
   sections:
