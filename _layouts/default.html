@@ -43,11 +43,11 @@
       #section{{ forloop.index0 }} .highlight-container:before { background: {{ s.highlight_color }}; opacity: 0.85; }
       #section{{ forloop.index0 }} .highlight-container:after { background: {{ s.highlight_color }}; opacity: 0.4; }
       {%- endif %}
-      {%- if s.image_scale %}
-      #section{{ forloop.index0 }} .gallery img { max-width: {{ 28 | times: s.image_scale }}vw; max-height: {{ 55 | times: s.image_scale }}vh; }
-      @media only screen and (orientation: portrait) {
-        #section{{ forloop.index0 }} .gallery img { max-width: 80vw; max-height: {{ 24 | times: s.image_scale }}vh; }
-      }
+      {%- if s.image_fill %}
+      /* gallery takes all the space left under the heading; images grow to fit it */
+      #section{{ forloop.index0 }} { display: flex; flex-direction: column; box-sizing: border-box; }
+      #section{{ forloop.index0 }} .gallery { flex: 1; min-height: 0; margin: 1em 0 3vh; }
+      #section{{ forloop.index0 }} .gallery img { max-width: 90vw; max-height: 100%; }
       {%- endif %}
       {%- if s.heading_color %}
       #section{{ forloop.index0 }} h1 { color: {{ s.heading_color }}; }
