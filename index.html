@@ -25,6 +25,9 @@ layout: default
       {%- endfor %}
     </div>
     {%- endif %}
+    {%- if s.button_url %}
+    <p><a class="section-button" href="{{ s.button_url | relative_url }}">{{ s.button_text | default: "See more" }}</a></p>
+    {%- endif %}
     {%- assign body = s.content | strip %}
     {%- if s.side_image %}
     <div class="split"{% if s.text_color %} style="color: {{ s.text_color }}"{% endif %}>

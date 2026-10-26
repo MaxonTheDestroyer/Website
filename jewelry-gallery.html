@@ -1,0 +1,111 @@
+---
+layout: null
+permalink: /jewelry/
+# Every image in assets/img/jewelery/gallery/thumb/ is shown; the large view uses the
+# same filename from assets/img/jewelery/gallery/large/.
+---
+{%- assign thumb_dir = "/assets/img/jewelery/gallery/thumb/" -%}
+{%- assign photos = site.static_files | where_exp: "f", "f.path contains thumb_dir" | sort: "name" -%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff5a71">
+    <title>Jewelery · {{ site.title }}</title>
+    <meta name="description" content="Metal jewelery by {{ site.title }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One|Gentium+Book+Basic&display=swap">
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #000; color: #eee; font-family: 'Gentium Book Basic', serif; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 1em; padding: 24px 4vw 8px; }
+      header h1 { margin: 0; font: normal clamp(1.6rem, 4vw, 3rem) 'Alfa Slab One', serif; }
+      .back { color: #eee; font-size: 1.1rem; white-space: nowrap; }
+      .back:hover { color: #ff5a71; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 16px 4vw 48px; }
+      .grid button { display: block; padding: 0; border: 0; background: #1a1a1a; cursor: zoom-in; aspect-ratio: 1; overflow: hidden; }
+      .grid img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .25s, opacity .25s; }
+      .grid button:hover img, .grid button:focus-visible img { transform: scale(1.05); opacity: .9; }
+      .grid button:focus-visible { outline: 3px solid #ff5a71; outline-offset: 2px; }
+      @media (max-width: 480px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 8px 4px 32px; } }
+
+      .lightbox { position: fixed; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.92); }
+      .lightbox.open { display: flex; }
+      .lightbox img { max-width: 92vw; max-height: 86vh; box-shadow: 0 8px 40px rgba(0,0,0,.6); user-select: none; }
+      .lightbox button { position: absolute; border: 0; background: none; color: #fff; font: 2.4rem/1 sans-serif; padding: 16px; cursor: pointer; opacity: .75; }
+      .lightbox button:hover, .lightbox button:focus-visible { opacity: 1; color: #ff5a71; }
+      .lb-close { top: 4px; right: 8px; }
+      .lb-prev { left: 4px; top: 50%; transform: translateY(-50%); }
+      .lb-next { right: 4px; top: 50%; transform: translateY(-50%); }
+      .lb-count { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; color: #bbb; font-size: 1rem; }
+      body.locked { overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Jewelery</h1>
+      <a class="back" href="{{ '/#1section' | relative_url }}">&larr; back to site</a>
+    </header>
+
+    <main class="grid">
+      {%- for p in photos %}
+      <button type="button" data-index="{{ forloop.index0 }}" data-large="{{ p.path | replace: '/thumb/', '/large/' | relative_url }}" aria-label="Open photo {{ forloop.index }} of {{ photos.size }}">
+        <img src="{{ p.path | relative_url }}" alt="Jewelery photo {{ forloop.index }}" loading="lazy" width="400" height="400">
+      </button>
+      {%- endfor %}
+    </main>
+
+    <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+      <img alt="">
+      <button type="button" class="lb-close" aria-label="Close">&times;</button>
+      <button type="button" class="lb-prev" aria-label="Previous photo">&#8249;</button>
+      <button type="button" class="lb-next" aria-label="Next photo">&#8250;</button>
+      <div class="lb-count"></div>
+    </div>
+
+    <script>
+      (function () {
+        var thumbs = Array.prototype.slice.call(document.querySelectorAll('.grid button'));
+        var box = document.querySelector('.lightbox');
+        var img = box.querySelector('img');
+        var count = box.querySelector('.lb-count');
+        var current = 0;
+
+        function show(i) {
+          current = (i + thumbs.length) % thumbs.length;
+          img.src = thumbs[current].dataset.large;
+          img.alt = 'Jewelery photo ' + (current + 1);
+          count.textContent = (current + 1) + ' / ' + thumbs.length;
+          // preload the neighbours so prev/next feel instant
+          [current - 1, current + 1].forEach(function (n) {
+            new Image().src = thumbs[(n + thumbs.length) % thumbs.length].dataset.large;
+          });
+        }
+        function open(i) { show(i); box.classList.add('open'); document.body.classList.add('locked'); box.querySelector('.lb-close').focus(); }
+        function close() { box.classList.remove('open'); document.body.classList.remove('locked'); img.removeAttribute('src'); thumbs[current].focus(); }
+
+        thumbs.forEach(function (t, i) { t.addEventListener('click', function () { open(i); }); });
+        box.querySelector('.lb-close').addEventListener('click', close);
+        box.querySelector('.lb-prev').addEventListener('click', function () { show(current - 1); });
+        box.querySelector('.lb-next').addEventListener('click', function () { show(current + 1); });
+        box.addEventListener('click', function (e) { if (e.target === box) close(); });
+        document.addEventListener('keydown', function (e) {
+          if (!box.classList.contains('open')) return;
+          if (e.key === 'Escape') close();
+          else if (e.key === 'ArrowLeft') show(current - 1);
+          else if (e.key === 'ArrowRight') show(current + 1);
+        });
+
+        // swipe left/right on touch screens
+        var startX = null;
+        box.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+        box.addEventListener('touchend', function (e) {
+          if (startX === null) return;
+          var dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+          startX = null;
+        });
+      })();
+    </script>
+  </body>
+</html>
