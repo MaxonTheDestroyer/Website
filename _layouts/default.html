@@ -48,8 +48,17 @@
       {%- if s.image_fill %}
       /* gallery takes all the space left under the heading; images grow to fit it */
       #section{{ forloop.index0 }} { display: flex; flex-direction: column; box-sizing: border-box; }
-      #section{{ forloop.index0 }} .gallery { flex: 1; min-height: 0; margin: 1em 0 3vh; }
-      #section{{ forloop.index0 }} .gallery img { max-width: 90vw; max-height: 100%; }
+      #section{{ forloop.index0 }} .gallery { flex: 1; min-height: 0; margin: 1em 0 {% if s.button_url %}0{% else %}3vh{% endif %}; }
+      #section{{ forloop.index0 }} .gallery img { max-height: 100%;{% if s.images.size == 1 %} max-width: 90vw;{% endif %} }
+      {%- if s.button_url %}
+      #section{{ forloop.index0 }} .section-button { margin: 2.5vh 0 4vh; }
+      {%- endif %}
+      {%- if s.images.size > 1 %}
+      @media only screen and (orientation: portrait) {
+        /* stacked images split the leftover height between them */
+        #section{{ forloop.index0 }} .gallery img { flex: 1 1 0; min-height: 0; width: 100%; max-width: 80vw; max-height: none; object-fit: contain; }
+      }
+      {%- endif %}
       {%- endif %}
       {%- if s.heading_color %}
       #section{{ forloop.index0 }} h1 { color: {{ s.heading_color }}; }

@@ -1,6 +1,7 @@
 ---
 order: 2
 heading: Awesome Metal Jewelery
+image_fill: true              # photos shrink to fit so the gallery button always stays on screen
 images:                       # three picks from the gallery (assets/img/jewelery/gallery/)
   - /assets/img/jewelery/gallery/large/IMG_2680.jpg
   - /assets/img/jewelery/gallery/large/IMG_2736.jpg
